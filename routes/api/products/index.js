@@ -1,5 +1,11 @@
 import { Router } from "express";
-import { getProducts, addProduct } from "../../../controllers/products";
+import {
+  getProducts,
+  addProduct,
+  getProductById,
+  removeProduct,
+  updateProduct,
+} from "../../../controllers/products";
 // import {
 //   validateQuery,
 //   validateCreate,
@@ -8,19 +14,20 @@ import { getProducts, addProduct } from "../../../controllers/products";
 //   validateId,
 // } from "./validation";
 // import { upload } from "../../../middlewares/upload";
+// import guard from "../../../middlewares/guard";
 
 const router = new Router();
 
 router.get("/", getProducts);
 
-// router.get("/plate/:id", validateId, getPlateById);
+router.get("/product/:id", getProductById);
 
 // router.post("/", upload.array("plateImage", 10), addPlate);
 router.post("/", addProduct);
 
-// router.delete("/:id", removePlate);
+router.delete("/:id", removeProduct);
 
-// router.put("/:id", updatePlate);
+router.put("/:id", updateProduct);
 
 // router.patch('/:id/favorite', validateUpdateFavorite, validateId, updatePlate)
 

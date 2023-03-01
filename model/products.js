@@ -17,10 +17,10 @@ const productsSchema = new Schema(
     description: {
       type: String,
     },
-    // productImage: {
-    //   type: Array,
-    //   default: null,
-    // },
+    productImage: {
+      type: Array,
+      default: null,
+    },
     // favorite: [{
     //     id: Schema.Types.ObjectId,
     //     addedDate: Date,

@@ -5,8 +5,8 @@ import { HttpCode } from "./lib/constants";
 import helmet from "helmet";
 
 import productsRouter from "./routes/api/products";
-// import authRouter from './routes/api/auth'
-// import usersRouter from './routes/api/users'
+import authRouter from "./routes/api/auth";
+// import usersRouter from "./routes/api/users";
 
 const app = express();
 
@@ -23,8 +23,8 @@ app.use("/upload", express.static(process.env.UPLOAD_DIR));
 // app.use(express.static(process.env.FOLDER_FOR_PLATES))
 
 app.use("/api/products", productsRouter);
-// app.use('/api/auth', authRouter)
-// app.use('/api/users', usersRouter)
+app.use("/api/auth", authRouter);
+// app.use("/api/users", usersRouter);
 
 app.use((req, res) => {
   res

@@ -45,4 +45,64 @@ const addProduct = async (req, res) => {
   }
 };
 
-export { getProducts, addProduct };
+const getProductById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const product = await repositoryProducts.getProductById(id);
+    console.log(product);
+    if (product) {
+      return res.status(HttpCode.OK).json(product);
+    }
+  } catch (error) {
+    res.status(HttpCode.NOT_FOUND).json({
+      status: "error",
+      code: HttpCode.NOT_FOUND,
+      message: "Щось пішло не так",
+    });
+  }
+};
+
+const removeProduct = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const product = await repositoryProducts.removeProduct(id);
+    if (product) {
+      return res
+        .status(HttpCode.OK)
+        .json({ status: "success", code: HttpCode.OK, product });
+    }
+  } catch (error) {
+    res.status(HttpCode.NOT_FOUND).json({
+      status: "error",
+      code: HttpCode.NOT_FOUND,
+      message: "Щось пішло не так",
+    });
+  }
+};
+
+const updateProduct = async (req, res) => {
+  try {
+    console.log(req.body);
+    const { id } = req.params;
+    console.log(id);
+    const product = await repositoryProducts.updateProduct(id, req.body);
+    console.log(product);
+    if (product) {
+      return res.status(HttpCode.OK).json(product);
+    }
+  } catch (error) {
+    res.status(HttpCode.NOT_FOUND).json({
+      status: "error",
+      code: HttpCode.NOT_FOUND,
+      message: "Щось пішло не так",
+    });
+  }
+};
+
+export {
+  getProducts,
+  addProduct,
+  getProductById,
+  removeProduct,
+  updateProduct,
+};
