@@ -3,9 +3,15 @@ import { HttpCode } from "../../lib/constants";
 
 const getProducts = async (req, res, next) => {
   try {
-    const products = await repositoryProducts.getProducts(req.query);
+    const { id: categoryId } = req.category;
+    const products = await repositoryProducts.listProducts(
+      categoryId,
+      req.query
+    );
     if (products) {
-      return res.status(HttpCode.OK).json(products);
+      return res
+        .status(HttpCode.OK)
+        .json({ status: "success", code: HttpCode.OK, products });
     }
   } catch (error) {
     res.status(HttpCode.NOT_FOUND).json({
@@ -26,13 +32,16 @@ const addProduct = async (req, res) => {
     //   );
     // }
 
-    // console.log(req.body);
+    // console.log(req.params);
 
-    const newProduct = await repositoryProducts.addProduct({
-      ...req.body,
+    const { id: categoryId } = req.category;
+    // console.log(categoryId);
+    const newProduct = await repositoryProducts.addProduct(
+      categoryId,
+      req.body
       // plateImage: reqFiles,
-    });
-
+    );
+    console.log(newProduct);
     if (newProduct) {
       return res.status(HttpCode.CREATED).json(newProduct);
     }

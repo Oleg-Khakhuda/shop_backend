@@ -1,1 +1,0 @@
-# nadik-shop-backend

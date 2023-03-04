@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-const { Schema, model } = mongoose;
+const { Schema, SchemaTypes, model } = mongoose;
 
 const productsSchema = new Schema(
   {
@@ -27,6 +27,12 @@ const productsSchema = new Schema(
     //     type: Boolean,
     //     default: false,
     // }],
+    category: {
+      //   // type: Number,
+      type: SchemaTypes.ObjectId,
+      ref: "category",
+      required: true,
+    },
   },
   {
     versionKey: false,
