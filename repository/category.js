@@ -1,12 +1,26 @@
 import Categories from "../model/category";
 
-const getCategories = async () => {
+const getAllCategories = async () => {
+  const total = await Categories.countDocuments();
   const result = await Categories.find();
-  return result;
+  return { total, items: result };
 };
 
-const addCategory = async (body) => {
-  const category = await Categories.create(body);
+const getCategories = async (categoryId) => {
+  const total = await Categories.countDocuments({ mainCategory: categoryId });
+  console.log(total);
+  let result = await Categories.find({ mainCategory: categoryId }).populate({
+    path: "mainCategory",
+    select: "title",
+  });
+  return { total, items: result };
+};
+
+const addCategory = async (categoryId, body) => {
+  const category = await Categories.create({
+    ...body,
+    mainCategory: categoryId,
+  });
   return category;
 };
 
@@ -31,6 +45,7 @@ const updateCategory = async (categoryId, body) => {
 };
 
 export default {
+  getAllCategories,
   getCategories,
   addCategory,
   getCategoryById,

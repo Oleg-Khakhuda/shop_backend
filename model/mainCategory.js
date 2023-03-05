@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const { Schema, SchemaTypes, model } = mongoose;
 
-const subcategorySchema = new Schema(
+const MainCategorySchema = new Schema(
   {
     title: {
       type: String,
@@ -22,6 +22,6 @@ const subcategorySchema = new Schema(
   }
 );
 
-const Subcategory = model("category", subcategorySchema);
+const MainCategory = model("mainCategory", MainCategorySchema);
 
-export default Subcategory;
+export default MainCategory;

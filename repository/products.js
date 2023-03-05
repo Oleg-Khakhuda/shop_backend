@@ -1,13 +1,16 @@
 import Products from "../model/products";
 
-// const getProducts = async () => {
-//   const result = await Products.find();
-//   return result;
-// };
+const getAllProducts = async () => {
+  const total = await Products.countDocuments();
+  const product = await Products.find();
+  // console.log(product);
+  // product = await product.skip(Number(0)).limit(Number(2));
+  return { total, items: product };
+};
 
 const listProducts = async (
   categoryId,
-  { sortBy, sortByDesc, filter, limit = 10, skip = 0 }
+  { sortBy, sortByDesc, filter, limit = 20, skip = 0 }
 ) => {
   let sortCriteria = null;
 
@@ -40,6 +43,7 @@ const addProduct = async (categoryId, body) => {
 };
 
 const getProductById = async (productId) => {
+  // const product = await Products.find();
   const result = await Products.findOne({ _id: productId });
   return result;
 };
@@ -59,6 +63,7 @@ const updateProduct = async (productId, body) => {
 };
 
 export default {
+  getAllProducts,
   listProducts,
   addProduct,
   getProductById,

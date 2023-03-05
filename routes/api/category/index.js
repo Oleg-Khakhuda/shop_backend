@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  getAllCategories,
   getCategories,
   addCategory,
   getCategoryById,
@@ -7,6 +8,7 @@ import {
   updateCategory,
 } from "../../../controllers/categories";
 import guardCategory from "../../../middlewares/guardCategory";
+import guardMainCategory from "../../../middlewares/guardMainCategory";
 // import {
 //   validateQuery,
 //   validateCreate,
@@ -19,12 +21,14 @@ import guardCategory from "../../../middlewares/guardCategory";
 
 const router = new Router();
 
-router.get("/", getCategories);
+router.get("/", getAllCategories);
+
+router.get("/:id", guardMainCategory, getCategories);
 
 router.get("/category/:id", getCategoryById);
 
 // router.post("/", upload.array("plateImage", 10), addPlate);
-router.post("/", addCategory);
+router.post("/:id", guardMainCategory, addCategory);
 
 router.delete("/:id", removeCategory);
 

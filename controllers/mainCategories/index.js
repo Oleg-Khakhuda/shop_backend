@@ -1,9 +1,9 @@
-import repositoryCategories from "../../repository/category";
+import repositoryMainCategories from "../../repository/mainCategory";
 import { HttpCode } from "../../lib/constants";
 
-const getAllCategories = async (req, res, next) => {
+const getMainCategories = async (req, res, next) => {
   try {
-    const categories = await repositoryCategories.getAllCategories();
+    const categories = await repositoryMainCategories.getMainCategories();
     if (categories) {
       return res.status(HttpCode.OK).json(categories);
     }
@@ -16,31 +16,12 @@ const getAllCategories = async (req, res, next) => {
   }
 };
 
-const getCategories = async (req, res, next) => {
+const addMainCategory = async (req, res) => {
   try {
-    const { id: categoryId } = req.mainCategory;
-    const result = await repositoryCategories.getCategories(categoryId);
-    if (result) {
-      return res
-        .status(HttpCode.OK)
-        .json({ status: "success", code: HttpCode.OK, result });
-    }
-  } catch (error) {
-    res.status(HttpCode.NOT_FOUND).json({
-      status: "error",
-      code: HttpCode.NOT_FOUND,
-      message: "Щось пішло не так",
-    });
-  }
-};
-
-const addCategory = async (req, res) => {
-  const { id: categoryId } = req.mainCategory;
-  try {
-    const newCategory = await repositoryCategories.addCategory(
-      categoryId,
+    const newCategory = await repositoryMainCategories.addMainCategory(
       req.body
     );
+    // console.log(newCategory);
     if (newCategory) {
       return res.status(HttpCode.CREATED).json(newCategory);
     }
@@ -53,10 +34,11 @@ const addCategory = async (req, res) => {
   }
 };
 
-const getCategoryById = async (req, res, next) => {
+const getMainCategoryById = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const category = await repositoryCategories.getCategoryById(id);
+    console.log(id);
+    const category = await repositoryMainCategories.getMainCategoryById(id);
     if (category) {
       return res.status(HttpCode.OK).json(category);
     }
@@ -69,10 +51,10 @@ const getCategoryById = async (req, res, next) => {
   }
 };
 
-const removeCategory = async (req, res, next) => {
+const removeMainCategory = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const category = await repositoryCategories.removeCategory(id);
+    const category = await repositoryMainCategories.removeMainCategory(id);
     if (category) {
       return res
         .status(HttpCode.OK)
@@ -87,10 +69,13 @@ const removeCategory = async (req, res, next) => {
   }
 };
 
-const updateCategory = async (req, res) => {
+const updateMainCategory = async (req, res) => {
   try {
     const { id } = req.params;
-    const category = await repositoryCategories.updateCategory(id, req.body);
+    const category = await repositoryMainCategories.updateMainCategory(
+      id,
+      req.body
+    );
     if (category) {
       return res.status(HttpCode.OK).json(category);
     }
@@ -104,10 +89,9 @@ const updateCategory = async (req, res) => {
 };
 
 export {
-  getAllCategories,
-  getCategories,
-  addCategory,
-  getCategoryById,
-  removeCategory,
-  updateCategory,
+  getMainCategories,
+  addMainCategory,
+  getMainCategoryById,
+  removeMainCategory,
+  updateMainCategory,
 };

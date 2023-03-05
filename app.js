@@ -5,6 +5,7 @@ import { HttpCode } from "./lib/constants";
 import helmet from "helmet";
 
 import productsRouter from "./routes/api/products";
+import mainCategoriesRouter from "./routes/api/mainCategory";
 import categoriesRouter from "./routes/api/category";
 import authRouter from "./routes/api/auth";
 // import usersRouter from "./routes/api/users";
@@ -23,6 +24,7 @@ app.use("/upload", express.static(process.env.UPLOAD_DIR));
 
 // app.use(express.static(process.env.FOLDER_FOR_PLATES))
 
+app.use("/api/maincategories", mainCategoriesRouter);
 app.use("/api/products", productsRouter);
 app.use("/api/categories", categoriesRouter);
 app.use("/api/auth", authRouter);

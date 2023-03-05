@@ -7,6 +7,11 @@ const categorySchema = new Schema(
       type: String,
       require: true,
     },
+    mainCategory: {
+      type: SchemaTypes.ObjectId,
+      ref: "mainCategory",
+      required: true,
+    },
   },
   {
     versionKey: false,

@@ -1,15 +1,12 @@
 import { Router } from "express";
 import {
-  getAllProducts,
-  getProducts,
-  addProduct,
-  getProductById,
-  removeProduct,
-  updateProduct,
-} from "../../../controllers/products";
-import guardCategory from "../../../middlewares/guardCategory";
+  getMainCategories,
+  addMainCategory,
+  getMainCategoryById,
+  removeMainCategory,
+  updateMainCategory,
+} from "../../../controllers/mainCategories";
 
-import category from "../../../repository/category";
 // import {
 //   validateQuery,
 //   validateCreate,
@@ -22,18 +19,16 @@ import category from "../../../repository/category";
 
 const router = new Router();
 
-router.get("/", getAllProducts);
+router.get("/", getMainCategories);
 
-router.get("/:id", guardCategory, getProducts);
-
-router.get("/product/:id", getProductById);
+router.get("/maincategory/:id", getMainCategoryById);
 
 // router.post("/", upload.array("plateImage", 10), addPlate);
-router.post("/:id", guardCategory, addProduct);
+router.post("/", addMainCategory);
 
-router.delete("/:id", removeProduct);
+router.delete("/:id", removeMainCategory);
 
-router.put("/:id", updateProduct);
+router.put("/:id", updateMainCategory);
 
 // router.patch('/:id/favorite', validateUpdateFavorite, validateId, updatePlate)
 
