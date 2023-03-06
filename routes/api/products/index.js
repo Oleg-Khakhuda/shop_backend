@@ -8,33 +8,38 @@ import {
   updateProduct,
 } from "../../../controllers/products";
 import guardCategory from "../../../middlewares/guardCategory";
-
-import category from "../../../repository/category";
-// import {
-//   validateQuery,
-//   validateCreate,
-//   validateUpdate,
-//   validateUpdateFavorite,
-//   validateId,
-// } from "./validation";
+import roleAccess from "../../../middlewares/role-access";
+import { Role } from "../../../lib/constants";
+import {
+  validateQuery,
+  validateCreate,
+  validateUpdate,
+  validateId,
+} from "./validation";
 // import { upload } from "../../../middlewares/upload";
-// import guard from "../../../middlewares/guard";
+import guard from "../../../middlewares/guard";
 
 const router = new Router();
 
-router.get("/", getAllProducts);
+router.get("/", validateQuery, getAllProducts);
 
-router.get("/:id", guardCategory, getProducts);
+router.get("/:id", guardCategory, validateQuery, getProducts);
 
-router.get("/product/:id", getProductById);
+router.get("/product/:id", validateId, getProductById);
 
 // router.post("/", upload.array("plateImage", 10), addPlate);
-router.post("/:id", guardCategory, addProduct);
+router.post(
+  "/:id",
+  [guard, roleAccess(Role.ADMIN), guardCategory, validateCreate],
+  addProduct
+);
 
-router.delete("/:id", removeProduct);
+router.delete("/:id", [guard, roleAccess(Role.ADMIN)], removeProduct);
 
-router.put("/:id", updateProduct);
-
-// router.patch('/:id/favorite', validateUpdateFavorite, validateId, updatePlate)
+router.put(
+  "/:id",
+  [guard, roleAccess(Role.ADMIN), validateUpdate],
+  updateProduct
+);
 
 export default router;

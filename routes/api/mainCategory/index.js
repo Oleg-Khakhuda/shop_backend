@@ -6,14 +6,10 @@ import {
   removeMainCategory,
   updateMainCategory,
 } from "../../../controllers/mainCategories";
-
-// import {
-//   validateQuery,
-//   validateCreate,
-//   validateUpdate,
-//   validateUpdateFavorite,
-//   validateId,
-// } from "./validation";
+import guard from "../../../middlewares/guard";
+import roleAccess from "../../../middlewares/role-access";
+import { Role } from "../../../lib/constants";
+import { validateCreate, validateUpdate, validateId } from "./validation";
 // import { upload } from "../../../middlewares/upload";
 // import guard from "../../../middlewares/guard";
 
@@ -21,14 +17,22 @@ const router = new Router();
 
 router.get("/", getMainCategories);
 
-router.get("/maincategory/:id", getMainCategoryById);
+router.get("/maincategory/:id", validateId, getMainCategoryById);
 
 // router.post("/", upload.array("plateImage", 10), addPlate);
-router.post("/", addMainCategory);
+router.post(
+  "/",
+  [guard, roleAccess(Role.ADMIN), validateCreate],
+  addMainCategory
+);
 
-router.delete("/:id", removeMainCategory);
+router.delete("/:id", [guard, roleAccess(Role.ADMIN)], removeMainCategory);
 
-router.put("/:id", updateMainCategory);
+router.put(
+  "/:id",
+  [guard, roleAccess(Role.ADMIN), validateUpdate],
+  updateMainCategory
+);
 
 // router.patch('/:id/favorite', validateUpdateFavorite, validateId, updatePlate)
 

@@ -71,4 +71,4 @@ const repeatEmailForVerifyUser = async (req, res, next) => {
   throw new CustomError(HttpCode.NOT_FOUND, "User with email not found");
 };
 
-export { aggregation, uploadAvatar, verifyUser, repeatEmailForVerifyUser };
+export { uploadAvatar, verifyUser, repeatEmailForVerifyUser };

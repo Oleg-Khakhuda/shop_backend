@@ -7,15 +7,11 @@ import {
   removeCategory,
   updateCategory,
 } from "../../../controllers/categories";
-import guardCategory from "../../../middlewares/guardCategory";
 import guardMainCategory from "../../../middlewares/guardMainCategory";
-// import {
-//   validateQuery,
-//   validateCreate,
-//   validateUpdate,
-//   validateUpdateFavorite,
-//   validateId,
-// } from "./validation";
+import roleAccess from "../../../middlewares/role-access";
+import { Role } from "../../../lib/constants";
+import guard from "../../../middlewares/guard";
+import { validateCreate, validateUpdate, validateId } from "./validation";
 // import { upload } from "../../../middlewares/upload";
 // import guard from "../../../middlewares/guard";
 
@@ -25,14 +21,22 @@ router.get("/", getAllCategories);
 
 router.get("/:id", guardMainCategory, getCategories);
 
-router.get("/category/:id", getCategoryById);
+router.get("/category/:id", validateId, getCategoryById);
 
 // router.post("/", upload.array("plateImage", 10), addPlate);
-router.post("/:id", guardMainCategory, addCategory);
+router.post(
+  "/:id",
+  [guard, roleAccess(Role.ADMIN), guardMainCategory, validateCreate],
+  addCategory
+);
 
-router.delete("/:id", removeCategory);
+router.delete("/:id", [guard, roleAccess(Role.ADMIN)], removeCategory);
 
-router.put("/:id", updateCategory);
+router.put(
+  "/:id",
+  [guard, roleAccess(Role.ADMIN), validateUpdate],
+  updateCategory
+);
 
 // router.patch('/:id/favorite', validateUpdateFavorite, validateId, updatePlate)
 

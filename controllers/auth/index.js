@@ -30,7 +30,7 @@ const login = async (req, res, next) => {
   await authService.setToken(user.id, token);
   res
     .status(HttpCode.OK)
-    .json({ status: "success", code: HttpCode.OK, data: { token } });
+    .json({ status: "success", code: HttpCode.OK, data: token });
 };
 
 const logout = async (req, res, next) => {
@@ -41,11 +41,11 @@ const logout = async (req, res, next) => {
 };
 
 const currentUser = async (req, res, next) => {
-  const { email, subscription } = req.user;
+  const { id, email, role } = req.user;
   res.status(HttpCode.OK).json({
     status: "success",
     code: HttpCode.OK,
-    data: { email, subscription },
+    data: { id, email, role },
   });
 };
 

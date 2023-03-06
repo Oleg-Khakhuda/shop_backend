@@ -17,18 +17,14 @@ const productsSchema = new Schema(
     description: {
       type: String,
     },
+    size: {
+      type: Array,
+    },
     productImage: {
       type: Array,
       default: null,
     },
-    // favorite: [{
-    //     id: Schema.Types.ObjectId,
-    //     addedDate: Date,
-    //     type: Boolean,
-    //     default: false,
-    // }],
     category: {
-      //   // type: Number,
       type: SchemaTypes.ObjectId,
       ref: "category",
       required: true,
