@@ -1,5 +1,9 @@
 import repositoryProducts from "../../repository/products";
 import { HttpCode } from "../../lib/constants";
+import fs from "fs";
+import imagemin from "imagemin";
+import imageminJpegtran from "imagemin-jpegtran";
+import imageminPngquant from "imagemin-pngquant";
 
 const getAllProducts = async (req, res, next) => {
   try {
@@ -41,24 +45,24 @@ const getProducts = async (req, res, next) => {
 
 const addProduct = async (req, res) => {
   try {
-    // const reqFiles = [];
-
-    // for (let i = 0; i < req.files.length; i++) {
-    //   reqFiles.push(
-    //     `http://localhost:${process.env.PORT}/${req.files[i].path}`
-    //   );
-    // }
-
-    // console.log(req.params);
-
     const { id: categoryId } = req.category;
-    // console.log(categoryId);
-    const newProduct = await repositoryProducts.addProduct(
-      categoryId,
-      req.body
-      // plateImage: reqFiles,
+    const files = req.files;
+
+    await imagemin(
+      files.map((file) => file.path),
+      {
+        destination: "upload/",
+        plugins: [
+          imageminJpegtran(),
+          imageminPngquant({ quality: [0.6, 0.8] }),
+        ],
+      }
     );
-    console.log(newProduct);
+
+    const newProduct = await repositoryProducts.addProduct(categoryId, {
+      ...req.body,
+      productImage: files.map((file) => file.path),
+    });
     if (newProduct) {
       return res.status(HttpCode.CREATED).json(newProduct);
     }
@@ -75,7 +79,6 @@ const getProductById = async (req, res, next) => {
   try {
     const { id } = req.params;
     const product = await repositoryProducts.getProductById(id);
-    console.log(product);
     if (product) {
       return res.status(HttpCode.OK).json(product);
     }
@@ -91,6 +94,11 @@ const getProductById = async (req, res, next) => {
 const removeProduct = async (req, res, next) => {
   try {
     const { id } = req.params;
+
+    const productImg = await repositoryProducts.getProductById(id);
+    productImg.productImage.forEach((imagePath) => {
+      fs.unlinkSync(imagePath);
+    });
     const product = await repositoryProducts.removeProduct(id);
     if (product) {
       return res
@@ -108,11 +116,33 @@ const removeProduct = async (req, res, next) => {
 
 const updateProduct = async (req, res) => {
   try {
-    console.log(req.body);
     const { id } = req.params;
-    console.log(id);
-    const product = await repositoryProducts.updateProduct(id, req.body);
-    console.log(product);
+
+    const files = req.files;
+
+    if (files) {
+      const productImg = await repositoryProducts.getProductById(id);
+      console.log(productImg.productImage);
+      productImg.productImage.forEach((imagePath) => {
+        fs.unlinkSync(imagePath);
+      });
+
+      await imagemin(
+        files.map((file) => file.path),
+        {
+          destination: "upload/",
+          plugins: [
+            imageminJpegtran(),
+            imageminPngquant({ quality: [0.6, 0.8] }),
+          ],
+        }
+      );
+    }
+
+    const product = await repositoryProducts.updateProduct(id, {
+      ...req.body,
+      productImage: files.map((file) => file.path),
+    });
     if (product) {
       return res.status(HttpCode.OK).json(product);
     }

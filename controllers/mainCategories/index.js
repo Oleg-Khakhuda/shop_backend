@@ -21,7 +21,6 @@ const addMainCategory = async (req, res) => {
     const newCategory = await repositoryMainCategories.addMainCategory(
       req.body
     );
-    // console.log(newCategory);
     if (newCategory) {
       return res.status(HttpCode.CREATED).json(newCategory);
     }

@@ -6,40 +6,27 @@ const orderSchema = new Schema({
     type: SchemaTypes.ObjectId,
     ref: "user",
   },
-  cart: {
-    totalQuantity: {
-      type: Number,
-      default: 0,
-      require: true,
-    },
-    totalPrice: {
-      type: Number,
-      default: 0,
-      require: true,
-    },
-    item: [
-      {
-        product: {
-          type: SchemaTypes.ObjectId,
-          ref: "product",
-          required: true,
-        },
-        quantity: {
-          type: Number,
-          default: 1,
-        },
-        price: {
-          type: Number,
-          require: true,
-        },
-        title: {
-          type: String,
-        },
-        productCode: {
-          type: String,
-        },
+  products: [
+    {
+      product: {
+        type: SchemaTypes.ObjectId,
+        ref: "product",
+        require: true,
       },
-    ],
+      // quantity: {
+      //   type: Number,
+      //   require: true,
+      //   default: 1,
+      // },
+    },
+  ],
+  // total: {
+  //   type: Number,
+  //   required: true,
+  // },
+  phone: {
+    type: Number,
+    required: true,
   },
   firstName: {
     type: String,
@@ -53,11 +40,6 @@ const orderSchema = new Schema({
     type: String,
     require: true,
   },
-  address: {
-    type: String,
-    require: true,
-  },
-
   paymentMethod: {
     type: String,
     required: true,

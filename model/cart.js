@@ -17,9 +17,6 @@ const cartSchema = new Schema({
         type: Number,
         require: true,
       },
-      title: {
-        type: String,
-      },
       productCode: {
         type: String,
       },
@@ -30,12 +27,12 @@ const cartSchema = new Schema({
     ref: "user",
     required: false,
   },
-  totalQuantity: {
+  totalPrice: {
     type: Number,
     default: 0,
     require: true,
   },
-  totalPrice: {
+  totalQuantity: {
     type: Number,
     default: 0,
     require: true,

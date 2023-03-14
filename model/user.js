@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 // import gravatar from "gravatar";
 import { Role } from "../lib/constants";
 
-const { Schema, model } = mongoose;
+const { Schema, SchemaTypes, model } = mongoose;
 
 const userSchema = new Schema(
   {
@@ -16,14 +16,6 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Password is required"],
     },
-    role: {
-      type: String,
-      enum: {
-        values: Object.values(Role),
-        message: "Role is not allowed",
-      },
-      default: Role.USER,
-    },
     email: {
       type: String,
       required: [true, "Email is required"],
@@ -33,6 +25,38 @@ const userSchema = new Schema(
         return re.test(String(value).trim().toLowerCase());
       },
     },
+    role: {
+      type: String,
+      enum: {
+        values: Object.values(Role),
+        message: "Role is not allowed",
+      },
+      default: Role.USER,
+    },
+    address: [
+      {
+        type: SchemaTypes.ObjectId,
+        ref: "address",
+      },
+    ],
+    cart: [
+      {
+        product: {
+          type: SchemaTypes.ObjectId,
+          ref: "product",
+        },
+        unit: {
+          type: Number,
+          require: true,
+        },
+      },
+    ],
+    orders: [
+      {
+        type: SchemaTypes.ObjectId,
+        ref: "order",
+      },
+    ],
     token: {
       type: String,
       default: null,

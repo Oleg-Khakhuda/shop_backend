@@ -3,7 +3,12 @@ import logger from "morgan";
 import cors from "cors";
 import { HttpCode } from "./lib/constants";
 import helmet from "helmet";
+import flash from "express-flash";
+import session from "express-session";
+import MongoStore from "connect-mongo";
 
+import orderRouter from "./routes/api/order";
+import cartRouter from "./routes/api/cart";
 import productsRouter from "./routes/api/products";
 import mainCategoriesRouter from "./routes/api/mainCategory";
 import categoriesRouter from "./routes/api/category";
@@ -14,6 +19,20 @@ const app = express();
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET_KEY,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 1000 * 60 * 60 * 24 },
+    store: MongoStore.create({
+      mongoUrl: process.env.URI_DB,
+      collection: "sessions",
+    }),
+  })
+);
+
+app.use(flash());
 app.use(helmet());
 app.use(logger(formatsLogger));
 app.use(cors());
@@ -24,6 +43,8 @@ app.use("/upload", express.static(process.env.UPLOAD_DIR));
 
 // app.use(express.static(process.env.FOLDER_FOR_PLATES))
 
+app.use("/api/cart", cartRouter);
+app.use("/api/checkout", orderRouter);
 app.use("/api/maincategories", mainCategoriesRouter);
 app.use("/api/products", productsRouter);
 app.use("/api/categories", categoriesRouter);

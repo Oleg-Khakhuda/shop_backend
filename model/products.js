@@ -20,10 +20,7 @@ const productsSchema = new Schema(
     size: {
       type: Array,
     },
-    productImage: {
-      type: Array,
-      default: null,
-    },
+    productImage: [{ type: String }],
     category: {
       type: SchemaTypes.ObjectId,
       ref: "category",

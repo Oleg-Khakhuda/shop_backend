@@ -38,12 +38,10 @@ const listProducts = async (
 
 const addProduct = async (categoryId, body) => {
   const product = await Products.create({ ...body, category: categoryId });
-  console.log(product);
   return product;
 };
 
 const getProductById = async (productId) => {
-  // const product = await Products.find();
   const result = await Products.findOne({ _id: productId });
   return result;
 };

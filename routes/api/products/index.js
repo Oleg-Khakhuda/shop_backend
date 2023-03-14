@@ -16,7 +16,7 @@ import {
   validateUpdate,
   validateId,
 } from "./validation";
-// import { upload } from "../../../middlewares/upload";
+import { upload } from "../../../middlewares/upload";
 import guard from "../../../middlewares/guard";
 
 const router = new Router();
@@ -28,9 +28,11 @@ router.get("/:id", guardCategory, validateQuery, getProducts);
 router.get("/product/:id", validateId, getProductById);
 
 // router.post("/", upload.array("plateImage", 10), addPlate);
+
 router.post(
   "/:id",
-  [guard, roleAccess(Role.ADMIN), guardCategory, validateCreate],
+  [guard, roleAccess(Role.ADMIN), guardCategory],
+  upload.array("productImage", 10),
   addProduct
 );
 
@@ -38,7 +40,8 @@ router.delete("/:id", [guard, roleAccess(Role.ADMIN)], removeProduct);
 
 router.put(
   "/:id",
-  [guard, roleAccess(Role.ADMIN), validateUpdate],
+  [guard, roleAccess(Role.ADMIN)],
+  upload.array("productImage", 10),
   updateProduct
 );
 
