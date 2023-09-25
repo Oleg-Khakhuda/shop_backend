@@ -33,30 +33,30 @@ const userSchema = new Schema(
       },
       default: Role.USER,
     },
-    address: [
-      {
-        type: SchemaTypes.ObjectId,
-        ref: "address",
-      },
-    ],
-    cart: [
-      {
-        product: {
-          type: SchemaTypes.ObjectId,
-          ref: "product",
-        },
-        unit: {
-          type: Number,
-          require: true,
-        },
-      },
-    ],
-    orders: [
-      {
-        type: SchemaTypes.ObjectId,
-        ref: "order",
-      },
-    ],
+    // address: [
+    //   {
+    //     type: SchemaTypes.ObjectId,
+    //     ref: "address",
+    //   },
+    // ],
+    // cart: [
+    //   {
+    //     product: {
+    //       type: SchemaTypes.ObjectId,
+    //       ref: "product",
+    //     },
+    //     unit: {
+    //       type: Number,
+    //       require: true,
+    //     },
+    //   },
+    // ],
+    // orders: [
+    //   {
+    //     type: SchemaTypes.ObjectId,
+    //     ref: "order",
+    //   },
+    // ],
     token: {
       type: String,
       default: null,

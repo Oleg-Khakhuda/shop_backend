@@ -6,12 +6,14 @@ const getMainCategories = async () => {
 };
 
 const addMainCategory = async (body) => {
+  // console.log(body);
   const category = await MainCategories.create(body);
   return category;
 };
 
 const getMainCategoryById = async (categoryId) => {
   const result = await MainCategories.findById(categoryId);
+  // console.log(result);
   return result;
 };
 

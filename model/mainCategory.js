@@ -7,6 +7,7 @@ const MainCategorySchema = new Schema(
       type: String,
       require: true,
     },
+    image: { type: String },
   },
   {
     versionKey: false,

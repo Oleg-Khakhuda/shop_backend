@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   getAllProducts,
   getProducts,
+  getProductsByMainCategory,
   addProduct,
   getProductById,
   removeProduct,
@@ -23,11 +24,10 @@ const router = new Router();
 
 router.get("/", validateQuery, getAllProducts);
 
-router.get("/:id", guardCategory, validateQuery, getProducts);
+router.get("/category/:id", guardCategory, validateQuery, getProducts);
+// router.get("/products/:id", getProductsByMainCategory);
 
 router.get("/product/:id", validateId, getProductById);
-
-// router.post("/", upload.array("plateImage", 10), addPlate);
 
 router.post(
   "/:id",

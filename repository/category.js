@@ -25,8 +25,7 @@ const addCategory = async (categoryId, body) => {
 };
 
 const getCategoryById = async (categoryId) => {
-  console.log(categoryId);
-  const result = await Categories.findById(categoryId);
+  const result = await Categories.findOne({ _id: categoryId });
   return result;
 };
 

@@ -15,7 +15,9 @@ const verifyToken = (token) => {
 
 const guard = async (req, res, next) => {
   const token = req.get("authorization")?.split(" ")[1];
+
   const isValidToken = verifyToken(token);
+
   if (!isValidToken) {
     return res.status(HttpCode.UNAUTHORIZED).json({
       status: "error",
@@ -24,7 +26,9 @@ const guard = async (req, res, next) => {
     });
   }
   const payload = jwt.decode(token);
+
   const user = await repositoryUsers.findById(payload.id);
+
   if (!user || user.token !== token) {
     return res.status(HttpCode.UNAUTHORIZED).json({
       status: "error",
@@ -32,7 +36,9 @@ const guard = async (req, res, next) => {
       message: "Not authorized",
     });
   }
+
   req.user = user; // res.locals.user = user
+
   next();
 };
 

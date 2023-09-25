@@ -6,6 +6,7 @@ import helmet from "helmet";
 import flash from "express-flash";
 import session from "express-session";
 import MongoStore from "connect-mongo";
+import { LIMIT_JSON } from "./lib/constants";
 
 import orderRouter from "./routes/api/order";
 import cartRouter from "./routes/api/cart";
@@ -36,7 +37,7 @@ app.use(flash());
 app.use(helmet());
 app.use(logger(formatsLogger));
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: LIMIT_JSON }));
 app.use(express.urlencoded({ extended: true }));
 // app.use(express.static(process.env.UPLOAD_DIR))
 app.use("/upload", express.static(process.env.UPLOAD_DIR));

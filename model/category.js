@@ -7,6 +7,7 @@ const categorySchema = new Schema(
       type: String,
       require: true,
     },
+    image: { type: String },
     mainCategory: {
       type: SchemaTypes.ObjectId,
       ref: "mainCategory",

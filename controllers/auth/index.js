@@ -3,6 +3,7 @@ import AuthService from "../../service/auth";
 const authService = new AuthService();
 
 const registration = async (req, res, next) => {
+  console.log(req.body);
   const { email } = req.body;
   const isUserExist = await authService.isUserExist(email);
   if (isUserExist) {
@@ -12,8 +13,11 @@ const registration = async (req, res, next) => {
       message: "Email is already exist",
     });
   }
-  const data = await authService.create(req.body);
-  res.status(HttpCode.OK).json({ status: "success", code: HttpCode.OK, data });
+  const user = await authService.create(req.body);
+  const token = authService.getToken(user);
+  await authService.setToken(user.id, token);
+
+  res.status(HttpCode.OK).json({ status: "success", code: HttpCode.OK, token });
 };
 
 const login = async (req, res, next) => {
@@ -28,24 +32,21 @@ const login = async (req, res, next) => {
   }
   const token = authService.getToken(user);
   await authService.setToken(user.id, token);
-  res
-    .status(HttpCode.OK)
-    .json({ status: "success", code: HttpCode.OK, data: token });
+
+  res.status(HttpCode.OK).json({ status: "success", code: HttpCode.OK, token });
 };
 
 const logout = async (req, res, next) => {
   await authService.setToken(req.user.id, null);
-  res
-    .status(HttpCode.NO_CONTENT)
-    .json({ status: "success", code: HttpCode.OK, data: {} });
+  res.status(HttpCode.NO_CONTENT).json();
 };
 
 const currentUser = async (req, res, next) => {
-  const { id, email, role } = req.user;
+  const { name, email, role } = req.user;
   res.status(HttpCode.OK).json({
     status: "success",
     code: HttpCode.OK,
-    data: { id, email, role },
+    data: { name, email, role },
   });
 };
 
